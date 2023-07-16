@@ -3,7 +3,9 @@ from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
+from langchain.chat_models import ChatOpenAI
 
 def get_pdf_text(documents):
   text=''
@@ -33,3 +35,13 @@ def get_vector_store(text_chunks):
   
   return vector_store
   
+def get_conversation_chain(vector_store):
+  llm = ChatOpenAI()
+  memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
+  
+  conversation_chain = ConversationalRetrievalChain.from_llm(
+    llm=llm,
+    retriever=vector_store.as_retriever(),
+    memory = memory
+  )
+  return conversation_chain

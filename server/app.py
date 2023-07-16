@@ -2,7 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 
 
-from helpers import get_pdf_text, get_text_chunks, get_vector_store
+from helpers import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
 
 
 
@@ -10,6 +10,9 @@ from helpers import get_pdf_text, get_text_chunks, get_vector_store
 def main():
   load_dotenv()
   st.set_page_config(page_title='Crawl PDFs', page_icon=':books:')
+  
+  if 'conversation' not in st.session_state:
+    st.session_state.conversation = None
   
   st.header('Crawl PDFs :books:')
   
@@ -29,6 +32,9 @@ def main():
         
         #create vector store
         vector_store = get_vector_store(text_chunks)
+        
+        #create conversation
+        st.session_state.conversation = get_conversation_chain(vector_store)
         
         st.success('Done!')
       
