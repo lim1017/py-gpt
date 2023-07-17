@@ -8,11 +8,13 @@ from helpers import get_pdf_text, get_text_chunks, get_vectorstore, get_conversa
 def clear_text():
   print('inclear text')
   st.session_state["input"] = ""
-
-def handle_user_input(input):
-  response = st.session_state.conversation({'question':input})
+  
+def handle_user_input():
+  response = st.session_state.conversation({'question': st.session_state["input"]})
   st.session_state.chat_history = response['chat_history']
 
+  st.session_state["input"] = ""
+  
   for i,msg in enumerate(st.session_state.chat_history):
     if i % 2 == 0:
       st.write(user_template.replace("{{MSG}}", msg.content), unsafe_allow_html=True)
@@ -35,9 +37,9 @@ def main():
   
   st.header('Crawl PDFs :books:')
   
-  user_input=st.text_input("Ask a Question")
-  if user_input:
-    handle_user_input(user_input)
+  st.text_input("Ask a Question", key="input", on_change=handle_user_input)
+  # if user_input:
+  #   handle_user_input(user_input)
 
   
   with st.sidebar:
