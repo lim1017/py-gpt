@@ -18,22 +18,24 @@ def get_pdf_text(documents):
       text +=  doc.read().decode('utf-8')
   return text
 
-def get_text_chunks(raw_text):
+
+
+def get_text_chunks(text):
   text_splitter = CharacterTextSplitter(
-    separator="/n",
+    separator="\n",
     chunk_size=1000,
-    chunk_overlap=200,
+    chunk_overlap=150,
     length_function=len
   )
-  
-  chunks=text_splitter.split_text(raw_text)
+  chunks = text_splitter.split_text(text)
   return chunks
 
-def get_vector_store(text_chunks):
-  embeddings=OpenAIEmbeddings()
-  vector_store=FAISS.from_texts(texts=text_chunks, embedding=embeddings)
-  
-  return vector_store
+def get_vectorstore(text_chunks):
+  embeddings = OpenAIEmbeddings()
+  # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
+  vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+  return vectorstore
+
   
 def get_conversation_chain(vector_store):
   llm = ChatOpenAI()

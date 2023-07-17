@@ -3,8 +3,11 @@ from dotenv import load_dotenv
 
 from htmlTemplate import css, bot_template, user_template
 
-from helpers import get_pdf_text, get_text_chunks, get_vector_store, get_conversation_chain
+from helpers import get_pdf_text, get_text_chunks, get_vectorstore, get_conversation_chain
 
+def clear_text():
+  print('inclear text')
+  st.session_state["input"] = ""
 
 def handle_user_input(input):
   response = st.session_state.conversation({'question':input})
@@ -15,6 +18,8 @@ def handle_user_input(input):
       st.write(user_template.replace("{{MSG}}", msg.content), unsafe_allow_html=True)
     else:
       st.write(bot_template.replace("{{MSG}}", msg.content), unsafe_allow_html=True)
+
+
 
 def main():
   load_dotenv()
@@ -33,8 +38,6 @@ def main():
   user_input=st.text_input("Ask a Question")
   if user_input:
     handle_user_input(user_input)
-    user_input=''
-  
 
   
   with st.sidebar:
@@ -50,7 +53,7 @@ def main():
         text_chunks = get_text_chunks(raw_text)
         
         #create vector store
-        vector_store = get_vector_store(text_chunks)
+        vector_store = get_vectorstore(text_chunks)
         
         #create conversation
         st.session_state.conversation = get_conversation_chain(vector_store)
