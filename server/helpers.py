@@ -15,7 +15,7 @@ def get_pdf_text(documents):
       for page in pdf_reader.pages:
         text += page.extract_text()
     else:
-      text += doc.getvalue()
+      text +=  doc.read().decode('utf-8')
   return text
 
 def get_text_chunks(raw_text):
