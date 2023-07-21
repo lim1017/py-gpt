@@ -16,9 +16,6 @@ def clear_text():
 
 
 def handle_user_input():
-    if st.session_state.conversation == None:
-        return
-
     response = st.session_state.conversation({"question": st.session_state["input"]})
     st.session_state.chat_history = response["chat_history"]
 
@@ -47,12 +44,16 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header("Crawl Files :books:")
+    st.header("Crawl your Text Files :books:")
     st.markdown(
         "Streamlit application that uses langchain, OpenAI, and FAISS libraries to create a simple chatbot that can answer questions based on the uploaded files."
     )
     st.markdown(
         "leverages NLP techniques such as text extraction, text splitting, embedding generation, and conversational retrieval to provide meaningful responses to user queries."
+    )
+    
+    st.markdown(
+        "Note: This is not a production ready application, but a proof of concept,  No error handling in place."
     )
 
     st.text_input("Ask a Question", key="input", on_change=handle_user_input)
