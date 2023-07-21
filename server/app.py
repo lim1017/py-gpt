@@ -34,7 +34,7 @@ def handle_user_input():
 
 def main():
     load_dotenv()
-    st.set_page_config(page_title="Crawl Files", page_icon=":books:")
+    st.set_page_config(page_title="Crawl PDF/Text Files", page_icon=":books:")
 
     st.write(css, unsafe_allow_html=True)
 
@@ -44,7 +44,7 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header("Crawl Files :books:")
+    st.header("Crawl PDF/Text Files :books:")
     st.markdown(
         "Streamlit application that uses langchain, OpenAI, and FAISS libraries to create a simple chatbot that can answer questions based on the uploaded files."
     )
@@ -52,7 +52,11 @@ def main():
         "leverages NLP techniques such as text extraction, text splitting, embedding generation, and conversational retrieval to provide meaningful responses to user queries."
     )
 
-    st.text_input("Ask a Question", key="input", on_change=handle_user_input)
+    st.text_input(
+        "Ask a Question",
+        key="input",
+        on_change=handle_user_input,
+    )
 
     with st.sidebar:
         st.subheader("Your Files")
