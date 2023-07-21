@@ -16,6 +16,9 @@ def clear_text():
 
 
 def handle_user_input():
+    if st.session_state.conversation == None:
+        return
+
     response = st.session_state.conversation({"question": st.session_state["input"]})
     st.session_state.chat_history = response["chat_history"]
 
